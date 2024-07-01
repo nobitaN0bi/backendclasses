@@ -1,34 +1,30 @@
 const http = require('http');
+const fs = require('fs');
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html');
     
     if(req.url === '/login') {
-        res.write(`
-            <html>
-                <head>
-                    <title>Login Page</title>
-                </head>
-                <body>
-                    <h1>Hello Login</h1>
-                </body>
-            </html>
-        `);
+        fs.readFile('login.html', function(err, data) {
+            if (err) {
+                res.writeHead(404);
+                res.end(JSON.stringify(err));
+                return;
+            }
+            res.writeHead(200);
+            res.end(data);
+        });
     } else {
-        res.write(`
-            <html>
-                <head>
-                    <title>Node.js Class</title>
-                </head>
-                <body>
-                    <h1>Hello World</h1>
-                    <button onclick="window.location.href='/login'">Login</button>
-                </body>
-            </html>
-        `);
+        fs.readFile('index.html', function(err, data) {
+            if (err) {
+                res.writeHead(404);
+                res.end(JSON.stringify(err));
+                return;
+            }
+            res.writeHead(200);
+            res.end(data);
+        });
     }
-    
-    res.end();
 });
 
 const port = 3000;
